@@ -19,5 +19,33 @@ const getPosts = async (): Promise<Post[]> => {
   return posts;
 };
 
+const getPostIds = async () => {
+  const res = await fetch("https://ok8omk.microcms.io/api/v1/posts?fields=id", {
+    headers: {
+      "X-API-KEY": process.env.MICROCMS_API_KEY,
+    },
+  });
+  const resJson = await res.json();
+  const posts = resJson.contents as Post[];
+
+  return posts.map((post) => {
+    return {
+      params: { id: post.id },
+    };
+  });
+};
+
+const getPost = async (id: string): Promise<Post> => {
+  const res = await fetch(`https://ok8omk.microcms.io/api/v1/posts/${id}`, {
+    headers: {
+      "X-API-KEY": process.env.MICROCMS_API_KEY,
+    },
+  });
+  const resJson = await res.json();
+  const post = resJson as Post;
+
+  return post;
+};
+
 export type { Post };
-export { getPosts };
+export { getPosts, getPostIds, getPost };
