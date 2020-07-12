@@ -47,5 +47,13 @@ const getPost = async (id: string): Promise<Post> => {
   return post;
 };
 
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  return `${year}/${month}/${day}`;
+};
+
 export type { Post };
-export { getPosts, getPostIds, getPost };
+export { getPosts, getPostIds, getPost, formatDate };

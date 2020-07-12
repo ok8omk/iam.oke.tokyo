@@ -1,14 +1,9 @@
 import { FC } from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
-import {
-  createMuiTheme,
-  createStyles,
-  makeStyles,
-} from "@material-ui/core/styles";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { cyan } from "@material-ui/core/colors";
-import Container from "@material-ui/core/Container";
 import Header from "../components/Header";
 
 const theme = createMuiTheme({
@@ -17,6 +12,9 @@ const theme = createMuiTheme({
       main: "#fafafa",
     },
     secondary: cyan,
+  },
+  typography: {
+    fontSize: 12,
   },
 });
 

@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { Post, getPosts } from "../lib/post";
+import { Post, getPosts, formatDate } from "../lib/post";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 
@@ -31,8 +31,8 @@ const Index: FC<Props> = ({ posts }) => {
                 <Typography variant="body1" component="p">
                   {formatDate(post.createdAt)}・
                   {post.content
-                    .replace(/<[a-z]+>/g, "")
-                    .replace(/<\/[a-z]+>/g, "")}
+                    .replace(/<.+>/g, "")
+                    .replace(/<\/[a-z1-9]+>/g, "")}
                 </Typography>
               </CardContent>
             </Card>
@@ -50,14 +50,5 @@ const getStaticProps: GetStaticProps = async () => {
     props: { posts },
   };
 };
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  return `${year}/${month}/${day}`;
-};
-
 export default Index;
 export { getStaticProps };

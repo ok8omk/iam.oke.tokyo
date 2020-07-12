@@ -1,18 +1,47 @@
 import { FC } from "react";
-import { Post, getPost, getPostIds } from "../../lib/post";
+import { Post, getPost, getPostIds, formatDate } from "../../lib/post";
 import { GetStaticPaths, GetStaticProps } from "next";
+import Container from "@material-ui/core/Container";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import { makeStyles } from "@material-ui/core/styles";
 
 type Props = {
   post: Post;
 };
 
+const useStyles = makeStyles({
+  title: {
+    fontSize: "2rem",
+  },
+  content: {
+    width: "100%",
+    "& h1": {
+      fontSize: "1.5rem",
+    },
+    "& img": {
+      maxWidth: "100%",
+    },
+  },
+});
+
 const View: FC<Props> = ({ post }) => {
+  const classes = useStyles();
   return (
-    <div key={post.id}>
-      <div>{post.title}</div>
-      <div dangerouslySetInnerHTML={{ __html: post.content }} />
-      <div>{post.createdAt}</div>
-    </div>
+    <Container>
+      <Typography variant="h1" className={classes.title}>
+        {post.title}
+      </Typography>
+      <Typography variant="overline">
+        投稿日:{formatDate(post.publishedAt)} / 最終更新日:
+        {formatDate(post.updatedAt)}
+      </Typography>
+      <Divider />
+      <article
+        className={classes.content}
+        dangerouslySetInnerHTML={{ __html: post.content }}
+      />
+    </Container>
   );
 };
 
