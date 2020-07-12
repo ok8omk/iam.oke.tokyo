@@ -1,3 +1,10 @@
+import cheerio from "cheerio";
+import { highlightAuto, configure } from "highlight.js";
+
+configure({
+  languages: ["c", "typescript", "ruby"],
+});
+
 type Post = {
   id: string;
   title: string;
@@ -14,7 +21,15 @@ const getPosts = async (): Promise<Post[]> => {
     },
   });
   const resJson = await res.json();
-  const posts = resJson.contents as Post[];
+  const posts = resJson.contents.map((post) => {
+    return {
+      ...post,
+      createdAt: formatDate(post.createdAt),
+      updatedAt: formatDate(post.updatedAt),
+      publishedAt: formatDate(post.publishedAt),
+      content: highlightContent(post.content),
+    };
+  }) as Post[];
 
   return posts;
 };
@@ -44,7 +59,24 @@ const getPost = async (id: string): Promise<Post> => {
   const resJson = await res.json();
   const post = resJson as Post;
 
-  return post;
+  return {
+    ...post,
+    createdAt: formatDate(post.createdAt),
+    updatedAt: formatDate(post.updatedAt),
+    publishedAt: formatDate(post.publishedAt),
+    content: highlightContent(post.content),
+  };
+};
+
+const highlightContent = (content: string) => {
+  const $ = cheerio.load(content);
+  $("pre code").each((_, elm) => {
+    const result = highlightAuto($(elm).text());
+    $(elm).html(result.value);
+    $(elm).addClass("hljs");
+  });
+
+  return $("body").html();
 };
 
 const formatDate = (dateString: string) => {

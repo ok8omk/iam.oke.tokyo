@@ -5,6 +5,7 @@ import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { cyan } from "@material-ui/core/colors";
 import Header from "../components/Header";
+import "highlight.js/styles/github.css";
 
 const theme = createMuiTheme({
   palette: {
