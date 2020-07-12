@@ -1,6 +1,11 @@
 import { FC } from "react";
+import Grid from "@material-ui/core/Grid";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
 import { Post, getPosts } from "../lib/post";
 import { GetStaticProps } from "next";
+import Link from "next/link";
 
 type Props = {
   posts: Post[];
@@ -8,17 +13,33 @@ type Props = {
 
 const Index: FC<Props> = ({ posts }) => {
   return (
-    <div>
-      {posts.map((post) => (
-        <div>
-          <a href={`/posts/${post.id}`}>{post.title}</a>
-          <div key={post.id}>
-            {formatDate(post.createdAt)}・
-            {post.content.replace(/<[a-z]+>/g, "").replace(/<\/[a-z]+>/g, "")}
-          </div>
-        </div>
-      ))}
-    </div>
+    <>
+      <Grid container direction="column" spacing={2}>
+        {posts.map((post) => (
+          <Grid item key={post.id}>
+            <Card variant="outlined">
+              <CardContent>
+                <Typography
+                  variant="subtitle1"
+                  color="textSecondary"
+                  gutterBottom
+                >
+                  <Link href={`/posts/${post.id}`}>
+                    <a>{post.title}</a>
+                  </Link>
+                </Typography>
+                <Typography variant="body1" component="p">
+                  {formatDate(post.createdAt)}・
+                  {post.content
+                    .replace(/<[a-z]+>/g, "")
+                    .replace(/<\/[a-z]+>/g, "")}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </>
   );
 };
 
