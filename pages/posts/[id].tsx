@@ -17,6 +17,7 @@ const useStyles = makeStyles({
   },
   content: {
     width: "100%",
+    fontSize: "1rem",
     "& img": {
       maxWidth: "100%",
     },
