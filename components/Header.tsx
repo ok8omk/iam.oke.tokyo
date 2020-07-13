@@ -6,9 +6,9 @@ import Typography from "@material-ui/core/Typography";
 
 const View: FC = () => {
   return (
-    <Appbar variant="outlined">
+    <Appbar position="relative" variant="outlined">
       <Toolbar>
-        <Typography variant="h6">
+        <Typography variant="h6" component="p">
           <Link href="/" color="textPrimary">
             iam.oke.tokyo
           </Link>

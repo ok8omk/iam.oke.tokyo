@@ -1,13 +1,19 @@
 import { FC, useEffect } from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
-import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import {
+  createMuiTheme,
+  responsiveFontSizes,
+  makeStyles,
+} from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { cyan } from "@material-ui/core/colors";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 import "highlight.js/styles/github.css";
 import { pageview } from "../lib/gtag";
 import Router from "next/router";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 const theme = createMuiTheme({
   palette: {
@@ -16,14 +22,12 @@ const theme = createMuiTheme({
     },
     secondary: cyan,
   },
-  typography: {
-    fontSize: 12,
-  },
 });
 
 const useStyles = makeStyles({
   container: {
-    paddingTop: 64,
+    padding: "16px 8px",
+    minHeight: "calc(100vh - 58px - 4rem)",
   },
 });
 
@@ -56,6 +60,8 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
         <div className={classes.container}>
           <Component {...pageProps} />
         </div>
+        <Footer />
+        <CssBaseline />
       </ThemeProvider>
     </>
   );
