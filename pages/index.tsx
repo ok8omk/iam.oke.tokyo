@@ -1,4 +1,5 @@
 import { FC } from "react";
+import Head from "next/head";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -14,6 +15,9 @@ type Props = {
 const Index: FC<Props> = ({ posts }) => {
   return (
     <>
+      <Head>
+        <title>iam.oke.tokyo</title>
+      </Head>
       <Grid container direction="column" spacing={2}>
         {posts.map((post) => {
           const abstract =
@@ -34,7 +38,7 @@ const Index: FC<Props> = ({ posts }) => {
                     </Link>
                   </Typography>
                   <Typography variant="body1" component="p">
-                    {abstract.slice(0, 150)}
+                    {abstract.slice(0, 70)}
                   </Typography>
                 </CardContent>
               </Card>
