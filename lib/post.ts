@@ -69,7 +69,7 @@ const getPost = async (id: string): Promise<Post> => {
 };
 
 const highlightContent = (content: string) => {
-  const $ = cheerio.load(content);
+  const $ = cheerio.load(content, { decodeEntities: false });
   $("pre code").each((_, elm) => {
     const result = highlightAuto($(elm).text());
     $(elm).html(result.value);

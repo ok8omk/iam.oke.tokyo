@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Post, getPost, getPostIds } from "../../lib/post";
 import { GetStaticPaths, GetStaticProps } from "next";
+import Head from "next/head";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
@@ -30,19 +31,24 @@ const useStyles = makeStyles({
 const View: FC<Props> = ({ post }) => {
   const classes = useStyles();
   return (
-    <Container>
-      <Typography variant="h1" className={classes.title}>
-        {post.title}
-      </Typography>
-      <Typography variant="overline">
-        投稿日:{post.publishedAt} / 最終更新日:
-        {post.updatedAt}
-      </Typography>
-      <Divider />
-      <article className={classes.content}>
-        {ReactHtmlParser(post.content, { transform })}
-      </article>
-    </Container>
+    <>
+      <Head>
+        <title>{post.title} | iam.oke.tokyo</title>
+      </Head>
+      <Container>
+        <Typography variant="h1" className={classes.title}>
+          {post.title}
+        </Typography>
+        <Typography variant="overline">
+          投稿日:{post.publishedAt} / 最終更新日:
+          {post.updatedAt}
+        </Typography>
+        <Divider />
+        <article className={classes.content}>
+          {ReactHtmlParser(post.content, { transform })}
+        </article>
+      </Container>
+    </>
   );
 };
 
