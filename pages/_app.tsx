@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
 import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
@@ -6,6 +6,8 @@ import { ThemeProvider } from "@material-ui/styles";
 import { cyan } from "@material-ui/core/colors";
 import Header from "../components/Header";
 import "highlight.js/styles/github.css";
+import { pageview } from "../lib/gtag";
+import Router from "next/router";
 
 const theme = createMuiTheme({
   palette: {
@@ -27,6 +29,15 @@ const useStyles = makeStyles({
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
   const classes = useStyles();
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      pageview(url);
+    };
+    Router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      Router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, []);
 
   return (
     <>
