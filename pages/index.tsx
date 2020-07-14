@@ -4,12 +4,12 @@ import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { Post, getPosts } from "../lib/post";
+import { Post, PostProps } from "../lib/post";
 import { GetStaticProps } from "next";
 import Link from "next/link";
 
 type Props = {
-  posts: Post[];
+  posts: PostProps[];
 };
 
 const Index: FC<Props> = ({ posts }) => {
@@ -21,7 +21,7 @@ const Index: FC<Props> = ({ posts }) => {
       <Grid container direction="column" spacing={2}>
         {posts.map((post) => {
           const abstract =
-            post.createdAt +
+            post.publishedAt +
             "・" +
             post.content.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, " ");
           return (
@@ -51,10 +51,11 @@ const Index: FC<Props> = ({ posts }) => {
 };
 
 const getStaticProps: GetStaticProps = async () => {
-  const posts = await getPosts();
+  const posts = await Post.getPosts();
+  const props = posts.map((post) => post.toProps());
 
   return {
-    props: { posts },
+    props: { posts: props },
   };
 };
 export default Index;
