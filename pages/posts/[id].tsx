@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Post, getPost, getPostIds } from "../../lib/post";
+import { Post, PostProps } from "../../lib/post";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import Container from "@material-ui/core/Container";
@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
 
 type Props = {
-  post: Post;
+  post: PostProps;
 };
 
 const useStyles = makeStyles({
@@ -76,7 +76,10 @@ const transform = (node, index) => {
 };
 
 const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await getPostIds();
+  const posts = await Post.getPosts();
+  const paths = posts.map((post) => {
+    return { params: { id: post.id } };
+  });
 
   return {
     paths,
@@ -85,10 +88,10 @@ const getStaticPaths: GetStaticPaths = async () => {
 };
 
 const getStaticProps: GetStaticProps = async ({ params }) => {
-  const post = await getPost(params.id as string);
+  const post = await Post.getPost(params.id as string);
 
   return {
-    props: { post },
+    props: { post: post.toProps() },
   };
 };
 

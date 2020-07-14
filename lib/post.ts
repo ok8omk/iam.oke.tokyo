@@ -5,87 +5,84 @@ configure({
   languages: ["c", "typescript", "ruby"],
 });
 
-type Post = {
+type PostProps = {
   id: string;
   title: string;
   content: string;
-  createdAt: string;
-  updatedAt: string;
   publishedAt: string;
+  updatedAt: string;
 };
 
-const getPosts = async (): Promise<Post[]> => {
-  const res = await fetch("https://ok8omk.microcms.io/api/v1/posts", {
-    headers: {
-      "X-API-KEY": process.env.MICROCMS_API_KEY,
-    },
-  });
-  const resJson = await res.json();
-  const posts = resJson.contents.map((post) => {
+class Post {
+  id: string;
+  title: string;
+  content: string;
+  publishedAt: string;
+  updatedAt: string;
+
+  constructor(param) {
+    this.id = param.id;
+    this.title = param.title;
+    this.content = this.highlightContent(param.content);
+    this.publishedAt = this.formatDate(param.publishedAt);
+    this.updatedAt = this.formatDate(param.updatedAt);
+  }
+
+  static async getPosts(): Promise<Post[]> {
+    const res = await fetch("https://ok8omk.microcms.io/api/v1/posts", {
+      headers: {
+        "X-API-KEY": process.env.MICROCMS_API_KEY,
+      },
+    });
+    const resJson = await res.json();
+    const posts = resJson.contents.map((postParam) => {
+      return new Post(postParam);
+    }) as Post[];
+
+    return posts;
+  }
+
+  static async getPost(id: string): Promise<Post> {
+    const res = await fetch(`https://ok8omk.microcms.io/api/v1/posts/${id}`, {
+      headers: {
+        "X-API-KEY": process.env.MICROCMS_API_KEY,
+      },
+    });
+    const resJson = await res.json();
+    const postParam = resJson as Post;
+
+    return new Post(postParam);
+  }
+
+  toProps(): PostProps {
     return {
-      ...post,
-      createdAt: formatDate(post.createdAt),
-      updatedAt: formatDate(post.updatedAt),
-      publishedAt: formatDate(post.publishedAt),
-      content: highlightContent(post.content),
+      id: this.id,
+      title: this.title,
+      content: this.content,
+      publishedAt: this.publishedAt,
+      updatedAt: this.updatedAt,
     };
-  }) as Post[];
+  }
 
-  return posts;
-};
+  private highlightContent(content: string): string {
+    const $ = cheerio.load(content, { decodeEntities: false });
+    $("pre code").each((_, elm) => {
+      const result = highlightAuto($(elm).text());
+      $(elm).html(result.value);
+      $(elm).addClass("hljs");
+    });
 
-const getPostIds = async () => {
-  const res = await fetch("https://ok8omk.microcms.io/api/v1/posts?fields=id", {
-    headers: {
-      "X-API-KEY": process.env.MICROCMS_API_KEY,
-    },
-  });
-  const resJson = await res.json();
-  const posts = resJson.contents as Post[];
+    return $("body").html();
+  }
 
-  return posts.map((post) => {
-    return {
-      params: { id: post.id },
-    };
-  });
-};
+  private formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    return `${year}/${month}/${day}`;
+  }
+}
 
-const getPost = async (id: string): Promise<Post> => {
-  const res = await fetch(`https://ok8omk.microcms.io/api/v1/posts/${id}`, {
-    headers: {
-      "X-API-KEY": process.env.MICROCMS_API_KEY,
-    },
-  });
-  const resJson = await res.json();
-  const post = resJson as Post;
-
-  return {
-    ...post,
-    createdAt: formatDate(post.createdAt),
-    updatedAt: formatDate(post.updatedAt),
-    publishedAt: formatDate(post.publishedAt),
-    content: highlightContent(post.content),
-  };
-};
-
-const highlightContent = (content: string) => {
-  const $ = cheerio.load(content, { decodeEntities: false });
-  $("pre code").each((_, elm) => {
-    const result = highlightAuto($(elm).text());
-    $(elm).html(result.value);
-    $(elm).addClass("hljs");
-  });
-
-  return $("body").html();
-};
-
-const formatDate = (dateString: string) => {
-  const date = new Date(dateString);
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  return `${year}/${month}/${day}`;
-};
-
-export type { Post };
-export { getPosts, getPostIds, getPost, formatDate };
+export type { PostProps };
+export { Post };
