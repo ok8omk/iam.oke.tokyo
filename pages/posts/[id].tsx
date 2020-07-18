@@ -25,11 +25,16 @@ const useStyles = makeStyles({
     "& iframe": {
       maxWidth: "100%",
     },
+    "& pre": {
+      width: "100%",
+      overflow: "scroll",
+    },
   },
 });
 
 const View: FC<Props> = ({ post }) => {
   const classes = useStyles();
+
   return (
     <>
       <Head>

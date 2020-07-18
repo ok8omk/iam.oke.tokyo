@@ -1,9 +1,6 @@
-import cheerio from "cheerio";
-import { highlightAuto, configure } from "highlight.js";
+import { highlight, languages } from "prismjs";
 
-configure({
-  languages: ["c", "typescript", "ruby"],
-});
+const LANGUAGES = ["js", "tsx", "rb", "yml", "bash", "sql", "vim", "py"];
 
 type PostProps = {
   id: string;
@@ -23,7 +20,7 @@ class Post {
   constructor(param) {
     this.id = param.id;
     this.title = param.title;
-    this.content = this.highlightContent(param.content);
+    this.content = this.highlightContent(param.contentParts);
     this.publishedAt = this.formatDate(param.publishedAt);
     this.updatedAt = this.formatDate(param.updatedAt);
   }
@@ -64,15 +61,27 @@ class Post {
     };
   }
 
-  private highlightContent(content: string): string {
-    const $ = cheerio.load(content, { decodeEntities: false });
-    $("pre code").each((_, elm) => {
-      const result = highlightAuto($(elm).text());
-      $(elm).html(result.value);
-      $(elm).addClass("hljs");
+  private highlightContent(
+    contentParts: { richEditor: string; language: string; sourceCode: string }[]
+  ): string {
+    let content = "";
+    contentParts.forEach(({ richEditor, language, sourceCode }, index) => {
+      if (index > 0) {
+        content += "<br />";
+      }
+      content += richEditor;
+      if (!LANGUAGES.includes(language)) {
+        return;
+      }
+      content += "<br />";
+      content += `<pre class='language-${language}'><code class='language-${language}'>`;
+      sourceCode.split("\n").forEach((lineOfsourceCode) => {
+        content += highlight(lineOfsourceCode, languages[language], language);
+        content += "<br />";
+      });
+      content += "</code></pre>";
     });
-
-    return $("body").html();
+    return content;
   }
 
   private formatDate(dateString: string): string {
