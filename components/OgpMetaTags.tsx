@@ -9,6 +9,7 @@ type Props = {
 const OgpMetaTags: FC<Props> = ({ urlPath, title, description }) => {
   return (
     <>
+      <meta name="description" content={description} />
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:site" content="@ok8omk" />
       <meta name="twitter:creator" content="@ok8omk" />
