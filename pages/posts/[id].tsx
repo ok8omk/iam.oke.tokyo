@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
+import OgpMetaTags from "../../components/OgpMetaTags";
 
 type Props = {
   post: PostProps;
@@ -39,6 +40,11 @@ const View: FC<Props> = ({ post }) => {
     <>
       <Head>
         <title>{post.title} | iam.oke.tokyo</title>
+        <OgpMetaTags
+          urlPath={`/posts/${post.id}`}
+          title={`${post.title} | iam.oke.tokyo`}
+          description={post.description}
+        />
       </Head>
       <Container>
         <Typography variant="h1" className={classes.title}>

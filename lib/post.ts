@@ -5,6 +5,7 @@ const LANGUAGES = ["js", "tsx", "rb", "yml", "bash", "sql", "vim", "py"];
 type PostProps = {
   id: string;
   title: string;
+  description: string;
   content: string;
   publishedAt: string;
   updatedAt: string;
@@ -14,12 +15,14 @@ class Post {
   id: string;
   title: string;
   content: string;
+  description: string;
   publishedAt: string;
   updatedAt: string;
 
   constructor(param) {
     this.id = param.id;
     this.title = param.title;
+    this.description = param.description;
     this.content = this.highlightContent(param.contentParts);
     this.publishedAt = this.formatDate(param.publishedAt);
     this.updatedAt = this.formatDate(param.updatedAt);
@@ -55,6 +58,7 @@ class Post {
     return {
       id: this.id,
       title: this.title,
+      description: this.description,
       content: this.content,
       publishedAt: this.publishedAt,
       updatedAt: this.updatedAt,
