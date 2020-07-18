@@ -6,7 +6,6 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { Post, PostProps } from "../lib/post";
 import { GetStaticProps } from "next";
-import Link from "next/link";
 import OgpMetaTags from "../components/OgpMetaTags";
 
 type Props = {
@@ -39,9 +38,7 @@ const Index: FC<Props> = ({ posts }) => {
                     color="textSecondary"
                     gutterBottom
                   >
-                    <Link href={`/posts/${post.id}`}>
-                      <a>{post.title}</a>
-                    </Link>
+                    <a href={`/posts/${post.id}`}>{post.title}</a>
                   </Typography>
                   <Typography variant="body1" component="p">
                     {abstract.slice(0, 70)}
