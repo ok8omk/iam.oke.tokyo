@@ -1,19 +1,15 @@
 import { FC, useEffect } from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
-import {
-  createMuiTheme,
-  responsiveFontSizes,
-  makeStyles,
-} from "@material-ui/core/styles";
+import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import { cyan } from "@material-ui/core/colors";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import "highlight.js/styles/github.css";
 import { pageview } from "../lib/gtag";
 import Router from "next/router";
 import CssBaseline from "@material-ui/core/CssBaseline";
+import "prismjs/themes/prism-okaidia.css";
 
 const theme = createMuiTheme({
   palette: {
