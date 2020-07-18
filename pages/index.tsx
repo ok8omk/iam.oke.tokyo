@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import { Post, PostProps } from "../lib/post";
 import { GetStaticProps } from "next";
 import Link from "next/link";
+import OgpMetaTags from "../components/OgpMetaTags";
 
 type Props = {
   posts: PostProps[];
@@ -17,6 +18,11 @@ const Index: FC<Props> = ({ posts }) => {
     <>
       <Head>
         <title>iam.oke.tokyo</title>
+        <OgpMetaTags
+          urlPath="/"
+          title="iam.oke.tokyo"
+          description="2年目ITエンジニアの無益なブログ。雨の降る日は天気が悪いというような当たり前なことばかり書いている。"
+        />
       </Head>
       <Grid container direction="column" spacing={2}>
         {posts.map((post) => {
