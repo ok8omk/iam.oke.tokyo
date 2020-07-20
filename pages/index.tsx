@@ -25,10 +25,6 @@ const Index: FC<Props> = ({ posts }) => {
       </Head>
       <Grid container direction="column" spacing={2}>
         {posts.map((post) => {
-          const abstract =
-            post.publishedAt +
-            "・" +
-            post.content.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, " ");
           return (
             <Grid item key={post.id}>
               <Card variant="outlined">
@@ -41,7 +37,7 @@ const Index: FC<Props> = ({ posts }) => {
                     <a href={`/posts/${post.id}`}>{post.title}</a>
                   </Typography>
                   <Typography variant="body1" component="p">
-                    {abstract.slice(0, 70)}
+                    {post.publishedAt + "・" + post.description}
                   </Typography>
                 </CardContent>
               </Card>
