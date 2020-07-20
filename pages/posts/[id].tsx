@@ -98,9 +98,22 @@ const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-const getStaticProps: GetStaticProps = async ({ params }) => {
-  const post = await Post.getPost(params.id as string);
+const getStaticProps: GetStaticProps = async ({
+  params,
+  preview,
+  previewData,
+}) => {
+  if (preview) {
+    const previewPost = await Post.getPreviewPost(
+      params.id as string,
+      previewData.draftKey as string
+    );
+    return {
+      props: { post: previewPost.toProps() },
+    };
+  }
 
+  const post = await Post.getPost(params.id as string);
   return {
     props: { post: post.toProps() },
   };
