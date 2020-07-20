@@ -35,8 +35,9 @@ class Post {
       },
     }).catch((_error) => null);
     if (!res) {
-      return null;
+      return [];
     }
+
     const resJson = await res.json();
     const posts = resJson.contents.map((postParam) => {
       return new Post(postParam);
