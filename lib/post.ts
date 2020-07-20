@@ -54,6 +54,21 @@ class Post {
     return new Post(postParam);
   }
 
+  static async getPreviewPost(id: string, draftKey: string): Promise<Post> {
+    const res = await fetch(
+      `https://ok8omk.microcms.io/api/v1/posts/${id}?draftKey=${draftKey}`,
+      {
+        headers: {
+          "X-API-KEY": process.env.MICROCMS_API_KEY,
+        },
+      }
+    );
+    const resJson = await res.json();
+    const postParam = resJson as Post;
+
+    return new Post(postParam);
+  }
+
   toProps(): PostProps {
     return {
       id: this.id,
