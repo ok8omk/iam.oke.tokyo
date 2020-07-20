@@ -19,6 +19,6 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     slug: previewPost.id,
     draftKey: req.query.draftKey,
   });
-  res.writeHead(307, { Location: `/${previewPost.id}` });
+  res.writeHead(307, { Location: `/posts/${previewPost.id}` });
   res.end("Preview mode enabled");
 };
