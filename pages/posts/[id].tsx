@@ -8,6 +8,7 @@ import Divider from "@material-ui/core/Divider";
 import { makeStyles } from "@material-ui/core/styles";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
 import OgpMetaTags from "../../components/OgpMetaTags";
+import ErrorPage from "next/error";
 
 type Props = {
   post: PostProps;
@@ -34,6 +35,10 @@ const useStyles = makeStyles({
 });
 
 const View: FC<Props> = ({ post }) => {
+  if (!post) {
+    return <ErrorPage statusCode={404} />;
+  }
+
   const classes = useStyles();
 
   return (
@@ -94,7 +99,7 @@ const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: true,
   };
 };
 
@@ -103,19 +108,15 @@ const getStaticProps: GetStaticProps = async ({
   preview,
   previewData,
 }) => {
-  if (preview) {
-    const previewPost = await Post.getPreviewPost(
-      params.id as string,
-      previewData.draftKey as string
-    );
-    return {
-      props: { post: previewPost.toProps() },
-    };
-  }
+  const post = preview
+    ? await Post.getPreviewPost(
+        params.id as string,
+        previewData.draftKey as string
+      )
+    : await Post.getPost(params.id as string);
 
-  const post = await Post.getPost(params.id as string);
   return {
-    props: { post: post.toProps() },
+    props: { post: post ? post.toProps() : null },
   };
 };
 

@@ -33,7 +33,10 @@ class Post {
       headers: {
         "X-API-KEY": process.env.MICROCMS_API_KEY,
       },
-    });
+    }).catch((_error) => null);
+    if (!res) {
+      return null;
+    }
     const resJson = await res.json();
     const posts = resJson.contents.map((postParam) => {
       return new Post(postParam);
@@ -47,7 +50,11 @@ class Post {
       headers: {
         "X-API-KEY": process.env.MICROCMS_API_KEY,
       },
-    });
+    }).catch((_error) => null);
+    if (!res) {
+      return null;
+    }
+
     const resJson = await res.json();
     const postParam = resJson as Post;
 
@@ -62,7 +69,11 @@ class Post {
           "X-API-KEY": process.env.MICROCMS_API_KEY,
         },
       }
-    );
+    ).catch((_error) => null);
+    if (!res) {
+      return null;
+    }
+
     const resJson = await res.json();
     const postParam = resJson as Post;
 
