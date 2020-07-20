@@ -21,6 +21,7 @@ const useStyles = makeStyles({
   content: {
     width: "100%",
     fontSize: "1rem",
+    wordBreak: "break-all",
     "& img": {
       maxWidth: "100%",
     },
