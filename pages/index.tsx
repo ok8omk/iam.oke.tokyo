@@ -39,10 +39,10 @@ const Index: FC<Props> = ({ posts }) => {
 
 const getStaticProps: GetStaticProps = async () => {
   const posts = await Post.getPosts();
-  const props = posts.map((post) => post.toProps());
+  const postProps = posts.map((post) => post.toProps());
 
   return {
-    props: { posts: props },
+    props: { posts: postProps },
   };
 };
 export default Index;
