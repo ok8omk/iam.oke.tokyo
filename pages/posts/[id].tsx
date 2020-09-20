@@ -17,6 +17,8 @@ type Props = {
   post: PostProps;
 };
 
+const MICROCMS_ASSET_DOMAIN = "images.microcms-assets.io" as const;
+
 const View: FC<Props> = ({ post }) => {
   if (!post) {
     return <ErrorPage statusCode={404} />;
@@ -63,6 +65,22 @@ const transform = (node, index) => {
   if (node.type === "tag" && node.name === "h5") {
     node.name = "h6";
     return convertNodeToElement(node, index, transform);
+  }
+  if (node.type === "tag" && node.name === "img") {
+    const src = node.attribs.src;
+    if (!src.includes(MICROCMS_ASSET_DOMAIN)) {
+      return node;
+    }
+    return (
+      <picture key={src}>
+        <source type="image/webp" srcSet={`${src}?fm=webp&w=1280`} />
+        <img
+          src={src}
+          srcSet={`${src}?w=1280 1x, ${src}?w=1280&dpr=2 2x`}
+          alt="記事中画像"
+        />
+      </picture>
+    );
   }
 };
 
