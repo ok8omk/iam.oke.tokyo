@@ -1,12 +1,10 @@
 import { FC } from "react";
 import Head from "next/head";
-import Grid from "@material-ui/core/Grid";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 import { Post, PostProps } from "../lib/post";
 import { GetStaticProps } from "next";
 import OgpMetaTags from "../components/OgpMetaTags";
+import { MainContainer } from "../components/styled";
+import { PostListingLayout, PostListingItem } from "../components/pages/index";
 
 type Props = {
   posts: PostProps[];
@@ -14,7 +12,7 @@ type Props = {
 
 const Index: FC<Props> = ({ posts }) => {
   return (
-    <>
+    <MainContainer>
       <Head>
         <title>iam.oke.tokyo</title>
         <OgpMetaTags
@@ -23,29 +21,19 @@ const Index: FC<Props> = ({ posts }) => {
           description="2年目ITエンジニアの無益なブログ。雨の降る日は天気が悪いというような当たり前なことばかり書いている。"
         />
       </Head>
-      <Grid container direction="column" spacing={2}>
+      <PostListingLayout>
         {posts.map((post) => {
           return (
-            <Grid item key={post.id}>
-              <Card variant="outlined">
-                <CardContent>
-                  <Typography
-                    variant="subtitle1"
-                    color="textSecondary"
-                    gutterBottom
-                  >
-                    <a href={`/posts/${post.id}`}>{post.title}</a>
-                  </Typography>
-                  <Typography variant="body1" component="p">
-                    {post.publishedAt + "・" + post.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+            <PostListingItem
+              id={post.id}
+              title={post.title}
+              publishedAt={post.publishedAt}
+              description={post.description}
+            />
           );
         })}
-      </Grid>
-    </>
+      </PostListingLayout>
+    </MainContainer>
   );
 };
 

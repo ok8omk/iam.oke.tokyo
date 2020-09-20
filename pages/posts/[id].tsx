@@ -2,48 +2,28 @@ import { FC } from "react";
 import { Post, PostProps } from "../../lib/post";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import { makeStyles } from "@material-ui/core/styles";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
 import OgpMetaTags from "../../components/OgpMetaTags";
 import ErrorPage from "next/error";
+import {
+  Divider,
+  MainContainer,
+  PostTitle,
+  PostContent,
+  PostMetaData,
+} from "../../components/styled";
 
 type Props = {
   post: PostProps;
 };
-
-const useStyles = makeStyles({
-  title: {
-    fontSize: "2rem",
-  },
-  content: {
-    width: "100%",
-    fontSize: "1rem",
-    wordBreak: "break-all",
-    "& img": {
-      maxWidth: "100%",
-    },
-    "& iframe": {
-      maxWidth: "100%",
-    },
-    "& pre": {
-      width: "100%",
-      overflow: "scroll",
-    },
-  },
-});
 
 const View: FC<Props> = ({ post }) => {
   if (!post) {
     return <ErrorPage statusCode={404} />;
   }
 
-  const classes = useStyles();
-
   return (
-    <>
+    <MainContainer>
       <Head>
         <title>{post.title} | iam.oke.tokyo</title>
         <OgpMetaTags
@@ -52,20 +32,14 @@ const View: FC<Props> = ({ post }) => {
           description={post.description}
         />
       </Head>
-      <Container>
-        <Typography variant="h1" className={classes.title}>
-          {post.title}
-        </Typography>
-        <Typography variant="overline">
-          投稿日:{post.publishedAt} / 最終更新日:
-          {post.updatedAt}
-        </Typography>
-        <Divider />
-        <article className={classes.content}>
-          {ReactHtmlParser(post.content, { transform })}
-        </article>
-      </Container>
-    </>
+      <PostTitle>{post.title}</PostTitle>
+      <PostMetaData>
+        投稿日:{post.publishedAt} / 最終更新日:
+        {post.updatedAt}
+      </PostMetaData>
+      <Divider />
+      <PostContent>{ReactHtmlParser(post.content, { transform })}</PostContent>
+    </MainContainer>
   );
 };
 

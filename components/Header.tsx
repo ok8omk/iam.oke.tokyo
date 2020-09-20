@@ -1,21 +1,22 @@
 import { FC } from "react";
-import Link from "@material-ui/core/Link";
-import Appbar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
+import styled from "@emotion/styled";
+import { DARK_COLOR } from "./styled/Colors";
 
-const View: FC = () => {
+const Container = styled.header`
+  width: 100%;
+  font-size: 1rem;
+  padding: 1em;
+  > a {
+    color: ${DARK_COLOR};
+    text-decoration: none;
+    font-weight: bold;
+  }
+`;
+
+export const Header: FC = () => {
   return (
-    <Appbar position="relative" variant="outlined">
-      <Toolbar>
-        <Typography variant="h6" component="p">
-          <Link href="/" color="textPrimary">
-            iam.oke.tokyo
-          </Link>
-        </Typography>
-      </Toolbar>
-    </Appbar>
+    <Container>
+      <a href="/">iam.oke.tokyo</a>
+    </Container>
   );
 };
-
-export default View;

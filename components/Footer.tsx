@@ -1,32 +1,16 @@
 import { FC } from "react";
-import Container from "@material-ui/core/Container";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import styled from "@emotion/styled";
+import { THEME_COLOR } from "./styled/Colors";
 
-const useStyles = makeStyles({
-  container: {
-    background: "#546e7a",
-    width: "100%",
-    textAlign: "center",
-    padding: "1.5rem",
-    color: "#fff",
-  },
-});
+const Container = styled.footer`
+  font-size: 1rem;
+  width: 100%;
+  padding: 1em;
+  background: ${THEME_COLOR};
+  color: white;
+  text-align: center;
+`;
 
-const View: FC = () => {
-  const classes = useStyles();
-  return (
-    <Container
-      component="footer"
-      maxWidth={false}
-      disableGutters
-      className={classes.container}
-    >
-      <Typography variant="body1" component="span">
-        This site uses Google Analytics.
-      </Typography>
-    </Container>
-  );
-};
-
-export default View;
+export const Footer: FC = () => (
+  <Container>This site uses Google Analytics.</Container>
+);
