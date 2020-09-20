@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styled from "@emotion/styled";
-import { THEME_COLOR } from "./styled/Colors";
+import { THEME_COLOR } from "../../Colors";
 
 const Container = styled.footer`
   font-size: 1rem;

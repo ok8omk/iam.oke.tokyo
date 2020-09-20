@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styled from "@emotion/styled";
-import { LIGHT_DARK_COLOR } from "../../styled/Colors";
+import { LIGHT_DARK_COLOR } from "../../Colors";
 
 type Props = {
   id: string;

@@ -3,15 +3,13 @@ import { Post, PostProps } from "../../lib/post";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
-import OgpMetaTags from "../../components/OgpMetaTags";
 import ErrorPage from "next/error";
 import {
-  Divider,
-  MainContainer,
   PostTitle,
   PostContent,
   PostMetaData,
-} from "../../components/styled";
+} from "../../components/pages/posts/id";
+import { MainContainer, Divider, OgpMetaTags } from "../../components/shared";
 
 type Props = {
   post: PostProps;

@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { DARK_COLOR, LIGHT_DARK_COLOR } from "./Colors";
+import { DARK_COLOR, LIGHT_DARK_COLOR } from "../../../Colors";
 
 const includeHeaderHash = (level: number) => `
   ::before {

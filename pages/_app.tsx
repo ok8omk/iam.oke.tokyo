@@ -1,8 +1,7 @@
 import { FC, useEffect } from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
-import { Header } from "../components/Header";
-import { Footer } from "../components/Footer";
+import { Header, Footer } from "../components/pages/_app";
 import { pageview } from "../lib/gtag";
 import Router from "next/router";
 import "prismjs/themes/prism-okaidia.css";

@@ -1,6 +1,6 @@
 import { FC } from "react";
 import styled from "@emotion/styled";
-import { DARK_COLOR } from "./styled/Colors";
+import { DARK_COLOR } from "../../Colors";
 
 const Container = styled.header`
   width: 100%;

@@ -2,9 +2,8 @@ import { FC } from "react";
 import Head from "next/head";
 import { Post, PostProps } from "../lib/post";
 import { GetStaticProps } from "next";
-import OgpMetaTags from "../components/OgpMetaTags";
-import { MainContainer } from "../components/styled";
 import { PostListingLayout, PostListingItem } from "../components/pages/index";
+import { MainContainer, OgpMetaTags } from "../components/shared";
 
 type Props = {
   posts: PostProps[];

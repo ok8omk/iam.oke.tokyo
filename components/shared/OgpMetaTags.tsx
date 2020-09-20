@@ -6,7 +6,7 @@ type Props = {
   description: string;
 };
 
-const OgpMetaTags: FC<Props> = ({ urlPath, title, description }) => {
+export const OgpMetaTags: FC<Props> = ({ urlPath, title, description }) => {
   return (
     <>
       <meta name="description" content={description} />
@@ -21,5 +21,3 @@ const OgpMetaTags: FC<Props> = ({ urlPath, title, description }) => {
     </>
   );
 };
-
-export default OgpMetaTags;
