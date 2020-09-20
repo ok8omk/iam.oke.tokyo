@@ -6,6 +6,7 @@ import {
   PostListingLayout,
   PostListingItem,
 } from "../../components/pages/index";
+import { SearchResult } from "../../components/pages/posts/search";
 import { MainContainer, OgpMetaTags } from "../../components/shared";
 
 type Props = {
@@ -24,6 +25,12 @@ const View: FC<Props> = ({ posts, queryWord }) => {
           description={`${posts.length}件の投稿`}
         />
       </Head>
+      <SearchResult>
+        「{queryWord}」の検索結果：
+        {posts.length > 0
+          ? `${posts.length}件の投稿が見つかりました。`
+          : `投稿は見つかりませんでした。`}
+      </SearchResult>
       <PostListingLayout>
         {posts.map((post) => {
           return (
@@ -42,12 +49,12 @@ const View: FC<Props> = ({ posts, queryWord }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const word = (context.query.word as string) || "";
+  const word = context.query.word as string;
   const posts = await Post.getPosts({ word });
-  const props = posts.map((post) => post.toProps());
+  const postProps = posts.map((post) => post.toProps());
 
   return {
-    props: { posts: props, word },
+    props: { posts: postProps, queryWord: word },
   };
 };
 

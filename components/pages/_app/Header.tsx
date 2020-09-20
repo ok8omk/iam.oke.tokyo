@@ -61,6 +61,10 @@ const useSearch = () => {
     (event: FormEvent) => {
       event.preventDefault();
       event.stopPropagation();
+      if (searchValue === "") {
+        window.location.href = "/";
+        return;
+      }
       window.location.href = `/posts/search?word=${searchValue}`;
     },
     [searchValue]
