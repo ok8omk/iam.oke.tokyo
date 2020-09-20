@@ -11,6 +11,23 @@ type PostProps = {
   updatedAt: string;
 };
 
+type SearchOption = {
+  word?: string;
+};
+
+const buildQuery = (searchOption: SearchOption): string => {
+  if (!searchOption) {
+    return "";
+  }
+  let query = "?";
+
+  if (searchOption.word) {
+    query += `q=${searchOption.word}`;
+  }
+
+  return query;
+};
+
 class Post {
   id: string;
   title: string;
@@ -28,8 +45,12 @@ class Post {
     this.updatedAt = this.formatDate(param.updatedAt);
   }
 
-  static async getPosts(): Promise<Post[]> {
-    const res = await fetch("https://ok8omk.microcms.io/api/v1/posts", {
+  static async getPosts(searchOption: SearchOption = null): Promise<Post[]> {
+    const fetchUrl = encodeURI(
+      "https://ok8omk.microcms.io/api/v1/posts" + buildQuery(searchOption)
+    );
+
+    const res = await fetch(fetchUrl, {
       headers: {
         "X-API-KEY": process.env.MICROCMS_API_KEY,
       },

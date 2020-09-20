@@ -6,6 +6,7 @@
       {
         "languages": ["js", "tsx", "rb", "yml", "bash", "sql", "vim", "py"]
       }
-    ]
+    ],
+    ["inline-react-svg"]
   ]
 }
