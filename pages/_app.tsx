@@ -1,34 +1,13 @@
 import { FC, useEffect } from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
-import { createMuiTheme, makeStyles } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-import { cyan } from "@material-ui/core/colors";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import { Header, Footer } from "../components/pages/_app";
 import { pageview } from "../lib/gtag";
 import Router from "next/router";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import "prismjs/themes/prism-okaidia.css";
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#fafafa",
-    },
-    secondary: cyan,
-  },
-});
-
-const useStyles = makeStyles({
-  container: {
-    padding: "16px 8px",
-    minHeight: "calc(100vh - 58px - 4rem)",
-  },
-});
+import "../style.css";
 
 const App: FC<AppProps> = ({ Component, pageProps }) => {
-  const classes = useStyles();
   useEffect(() => {
     const handleRouteChange = (url) => {
       pageview(url);
@@ -51,14 +30,9 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
         />
       </Head>
-      <ThemeProvider theme={theme}>
-        <Header />
-        <div className={classes.container}>
-          <Component {...pageProps} />
-        </div>
-        <Footer />
-        <CssBaseline />
-      </ThemeProvider>
+      <Header />
+      <Component {...pageProps} />
+      <Footer />
     </>
   );
 };

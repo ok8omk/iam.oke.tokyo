@@ -2,48 +2,28 @@ import { FC } from "react";
 import { Post, PostProps } from "../../lib/post";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Head from "next/head";
-import Container from "@material-ui/core/Container";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import { makeStyles } from "@material-ui/core/styles";
 import ReactHtmlParser, { convertNodeToElement } from "react-html-parser";
-import OgpMetaTags from "../../components/OgpMetaTags";
 import ErrorPage from "next/error";
+import {
+  PostTitle,
+  PostContent,
+  PostMetaData,
+} from "../../components/pages/posts/id";
+import { MainContainer, Divider, OgpMetaTags } from "../../components/shared";
 
 type Props = {
   post: PostProps;
 };
 
-const useStyles = makeStyles({
-  title: {
-    fontSize: "2rem",
-  },
-  content: {
-    width: "100%",
-    fontSize: "1rem",
-    wordBreak: "break-all",
-    "& img": {
-      maxWidth: "100%",
-    },
-    "& iframe": {
-      maxWidth: "100%",
-    },
-    "& pre": {
-      width: "100%",
-      overflow: "scroll",
-    },
-  },
-});
+const MICROCMS_ASSET_DOMAIN = "images.microcms-assets.io" as const;
 
 const View: FC<Props> = ({ post }) => {
   if (!post) {
     return <ErrorPage statusCode={404} />;
   }
 
-  const classes = useStyles();
-
   return (
-    <>
+    <MainContainer>
       <Head>
         <title>{post.title} | iam.oke.tokyo</title>
         <OgpMetaTags
@@ -52,20 +32,14 @@ const View: FC<Props> = ({ post }) => {
           description={post.description}
         />
       </Head>
-      <Container>
-        <Typography variant="h1" className={classes.title}>
-          {post.title}
-        </Typography>
-        <Typography variant="overline">
-          投稿日:{post.publishedAt} / 最終更新日:
-          {post.updatedAt}
-        </Typography>
-        <Divider />
-        <article className={classes.content}>
-          {ReactHtmlParser(post.content, { transform })}
-        </article>
-      </Container>
-    </>
+      <PostTitle>{post.title}</PostTitle>
+      <PostMetaData>
+        投稿日:{post.publishedAt} / 最終更新日:
+        {post.updatedAt}
+      </PostMetaData>
+      <Divider />
+      <PostContent>{ReactHtmlParser(post.content, { transform })}</PostContent>
+    </MainContainer>
   );
 };
 
@@ -89,6 +63,22 @@ const transform = (node, index) => {
   if (node.type === "tag" && node.name === "h5") {
     node.name = "h6";
     return convertNodeToElement(node, index, transform);
+  }
+  if (node.type === "tag" && node.name === "img") {
+    const src = node.attribs.src;
+    if (!src.includes(MICROCMS_ASSET_DOMAIN)) {
+      return node;
+    }
+    return (
+      <picture key={src}>
+        <source type="image/webp" srcSet={`${src}?fm=webp&w=1280`} />
+        <img
+          src={src}
+          srcSet={`${src}?w=1280 1x, ${src}?w=1280&dpr=2 2x`}
+          alt="記事中画像"
+        />
+      </picture>
+    );
   }
 };
 
