@@ -25,6 +25,7 @@ const Index: FC<Props> = ({ posts }) => {
         {posts.map((post) => {
           return (
             <PostListingItem
+              key={post.id}
               id={post.id}
               title={post.title}
               publishedAt={post.publishedAt}
