@@ -13,10 +13,10 @@ const Container = styled.header`
 
 const SiteNamePart = styled.div`
   display: block;
-  color: ${DARK_COLOR};
-  text-decoration: none;
   font-weight: bold;
   > a {
+    color: ${DARK_COLOR};
+    text-decoration: none;
     vertical-align: middle;
   }
 `;
